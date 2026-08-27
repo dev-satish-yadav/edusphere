@@ -1,0 +1,21 @@
+{
+  "Something_went_wrong": "Something went wrong",
+  "Invalid_id": "Invalid id",
+
+  "Admin_created": "Admin has been created successfully.",
+  "Admin_updated": "Admin has been updated successfully.",
+  "Admin_deleted": "Admin has been deleted successfully.",
+  "Admin_not_found": "Admin not found.",
+  "Email_exist": "Email already exists.",
+  "Email_or_Password_wrong": "Email or password is wrong.",
+  "Account_disabled": "Account is disabled.",
+  "Login_successful": "Login successful.",
+
+  "User_created": "User has been created successfully.",
+  "User_updated": "User has been updated successfully.",
+  "User_not_found": "User not found.",
+
+  "Error_log_deleted": "Error log has been deleted successfully.",
+  "Error_logs_deleted": "Error logs have been deleted successfully.",
+  "Error_log_not_found": "Error log not found."
+}
