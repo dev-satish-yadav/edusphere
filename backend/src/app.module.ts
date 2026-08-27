@@ -10,6 +10,7 @@ import { AdminModule } from './controller/admin/admin.module';
 import { ErrorlogModule } from './controller/error-log/error-log.module';
 import { UsersModule } from './controller/users/users.module';
 import { CacheModule } from './cache/cache.module';
+import { InstitutionsModule } from './controller/institutions/institutions.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
@@ -21,7 +22,7 @@ modules.push(
   }]),
   ConfigModule.forRoot({ isGlobal: true }),
   MongooseModule.forRoot(
-    process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/nestjs_repo',
+    process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/edusphere',
   ),
   JwtModule.register({
     global: true,
@@ -33,6 +34,7 @@ modules.push(
   AdminModule,
   ErrorlogModule,
   CacheModule,
+  InstitutionsModule,
 );
 
 @Module({
