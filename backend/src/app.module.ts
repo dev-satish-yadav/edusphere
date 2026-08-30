@@ -13,6 +13,8 @@ import { CacheModule } from './cache/cache.module';
 import { InstitutionsModule } from './controller/institutions/institutions.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { RolesModule } from './controller/roles/roles.module';
+import { PermissionsModule } from './controller/permissions/permissions.module';
 
 const modules: any = [];
 modules.push(

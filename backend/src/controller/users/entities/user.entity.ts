@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Role } from '../../roles/entities/role.entity';
 
 export type UserDocument = User & Document;
 
@@ -16,6 +17,15 @@ export class User {
 
   @Prop({ type: Number })
   age?: number;
+
+  @Prop({ required: false })
+  tenantId: string;
+
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Role' }] })
+  roles: Role[];
+
+  @Prop({ type: String, enum: ['SUPER_ADMIN', 'INSTITUTION_ADMIN', 'PRINCIPAL', 'TEACHER', 'STUDENT', 'PARENT'] })
+  userType: string;
 
   @Prop({ type: Boolean, default: true })
   isActive: boolean;
