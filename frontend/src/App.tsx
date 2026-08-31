@@ -5,6 +5,7 @@ import { Login } from './pages/auth/Login';
 import { CreateSuperAdmin } from './pages/auth/CreateSuperAdmin';
 import { SuperAdminLayout } from './components/layouts/SuperAdminLayout';
 import { AdminList } from './pages/superadmin/AdminList';
+import { CreateAdmin } from './pages/superadmin/CreateAdmin';
 import { InstitutionList } from './pages/superadmin/InstitutionList';
 import { useAuthStore } from './store/auth.store';
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/" element={<SuperAdminLayout />}>
                 <Route index element={<InstitutionList />} />
                 <Route path="admins" element={<AdminList />} />
+                <Route path="admins/create" element={<CreateAdmin />} />
               </Route>
             ) : (
               <Route path="/" element={

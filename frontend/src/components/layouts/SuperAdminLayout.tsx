@@ -33,24 +33,24 @@ export const SuperAdminLayout = () => {
     <div className="min-h-screen bg-[#F4F7FE] flex flex-col font-sans">
       
       {/* Top Header */}
-      <header className="h-[72px] bg-white border-b border-gray-200 flex items-center justify-between px-4 sticky top-0 z-50 transition-all">
+      <header className="h-[76px] bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 sticky top-0 z-50 transition-all">
         
         {/* Left: Logo & Menu */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 text-gray-500 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-2.5 text-gray-500 hover:bg-gray-50 hover:text-blue-600 rounded-xl transition-all"
           >
-            <Menu size={20} />
+            <Menu size={22} />
           </button>
           
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md shadow-blue-600/20">
               E
             </div>
             <div className="flex flex-col hidden sm:flex">
-              <span className="font-bold text-gray-800 text-[15px] leading-tight">EduSphere</span>
-              <span className="text-gray-500 text-[11px] leading-tight">Super Admin</span>
+              <span className="font-extrabold text-gray-900 text-base leading-tight tracking-tight">EduSphere</span>
+              <span className="text-gray-500 text-[11px] font-medium leading-tight">Super Admin</span>
             </div>
           </div>
         </div>
@@ -58,32 +58,36 @@ export const SuperAdminLayout = () => {
         {/* Right: Profile Dropdown */}
         <div className="flex items-center justify-end flex-1 relative" ref={profileRef}>
           <div 
-            className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors border border-transparent hover:border-gray-200" 
+            className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 pr-3 rounded-2xl transition-all border border-transparent hover:border-gray-100" 
             onClick={() => setIsProfileOpen(!isProfileOpen)}
           >
-            <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm">
+            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm border border-blue-200">
               {user?.name?.charAt(0).toUpperCase() || 'A'}
             </div>
             <div className="hidden md:flex flex-col">
-              <span className="text-sm font-semibold text-gray-800 leading-tight">{user?.name || 'Admin User'}</span>
-              <span className="text-[11px] text-gray-500 leading-tight capitalize">{user?.role || 'Administrator'}</span>
+              <span className="text-sm font-bold text-gray-800 leading-tight">{user?.name || 'Admin User'}</span>
+              <span className="text-[11px] font-medium text-gray-500 leading-tight capitalize">{user?.role || 'Administrator'}</span>
             </div>
-            <ChevronDown size={14} className="text-gray-400" />
+            <ChevronDown size={16} className={`text-gray-400 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
           </div>
 
           {/* Dropdown Menu */}
           {isProfileOpen && (
-            <div className="absolute top-[60px] right-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-                <UserIcon size={16} className="text-gray-400" />
-                Profile
+            <div className="absolute top-[68px] right-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 transform origin-top-right transition-all">
+              <div className="px-4 py-3 border-b border-gray-50 mb-2">
+                <p className="text-sm font-bold text-gray-900">{user?.name}</p>
+                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              </div>
+              <button className="w-full text-left px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-3 transition-colors">
+                <UserIcon size={18} />
+                My Profile
               </button>
               <button 
                 onClick={logout}
-                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                className="w-full text-left px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
               >
-                <LogOut size={16} className="text-red-400" />
-                Logout
+                <LogOut size={18} />
+                Sign Out
               </button>
             </div>
           )}
@@ -91,19 +95,19 @@ export const SuperAdminLayout = () => {
       </header>
 
       {/* Body Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         
         {/* Left Sidebar */}
         <aside 
-          className={`bg-white border-r border-gray-200 flex flex-col pb-4 transition-all duration-300 ease-in-out relative z-10 ${
-            isSidebarOpen ? 'w-[260px]' : 'w-[72px]'
+          className={`bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] flex flex-col pb-4 transition-all duration-300 ease-in-out relative z-10 ${
+            isSidebarOpen ? 'w-[260px]' : 'w-[80px]'
           }`}
         >
-          <div className="pt-6 pb-2 overflow-x-hidden flex flex-col h-full">
-            <p className={`text-[11px] font-bold text-gray-400 tracking-wider mb-4 transition-all duration-300 ${
+          <div className="pt-8 pb-2 overflow-x-hidden flex flex-col h-full">
+            <p className={`text-[11px] font-extrabold text-gray-400 tracking-widest mb-6 transition-all duration-300 ${
               isSidebarOpen ? 'px-6' : 'px-0 text-center opacity-0'
             }`}>
-              {isSidebarOpen ? 'MAIN' : '...'}
+              {isSidebarOpen ? 'MAIN MENU' : '...'}
             </p>
             
             <ul className="space-y-2 px-3">
@@ -113,19 +117,19 @@ export const SuperAdminLayout = () => {
                 return (
                   <li key={item.path} className="relative group">
                     {isActive && (
-                      <div className="absolute left-[-12px] top-0 bottom-0 w-1 bg-blue-600 rounded-r-md"></div>
+                      <div className="absolute left-[-12px] top-1 bottom-1 w-1 bg-blue-600 rounded-r-full shadow-[2px_0_8px_rgba(37,99,235,0.4)]"></div>
                     )}
                     <Link
                       to={item.path}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                      className={`flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all ${
                         isActive
-                          ? 'text-blue-700 bg-blue-50/50'
-                          : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'
+                          ? 'text-blue-700 bg-blue-50/80 font-bold shadow-sm border border-blue-100/50'
+                          : 'text-gray-500 hover:text-blue-600 hover:bg-gray-50 font-semibold'
                       }`}
                     >
-                      <Icon size={20} className={`min-w-[20px] ${isActive ? 'text-blue-600' : 'text-gray-400'}`} />
+                      <Icon size={22} className={`min-w-[22px] transition-colors ${isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-500'}`} />
                       
-                      <span className={`text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                      <span className={`text-sm whitespace-nowrap transition-all duration-300 ${
                         isSidebarOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 hidden'
                       }`}>
                         {item.name}
@@ -134,7 +138,7 @@ export const SuperAdminLayout = () => {
 
                     {/* Hover Tooltip for collapsed state */}
                     {!isSidebarOpen && (
-                      <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 bg-gray-800 text-white text-xs font-medium rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-lg">
+                      <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-1.5 bg-gray-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 pointer-events-none shadow-xl border border-gray-700">
                         {item.name}
                       </div>
                     )}
@@ -146,7 +150,7 @@ export const SuperAdminLayout = () => {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto p-6 relative z-0">
+        <main className="flex-1 overflow-y-auto p-6 sm:p-8 relative z-0">
           <Outlet />
         </main>
       </div>
