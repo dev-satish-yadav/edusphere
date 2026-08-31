@@ -7,6 +7,7 @@ import { SuperAdminLayout } from './components/layouts/SuperAdminLayout';
 import { AdminList } from './pages/superadmin/AdminList';
 import { CreateAdmin } from './pages/superadmin/CreateAdmin';
 import { InstitutionList } from './pages/superadmin/InstitutionList';
+import { CreateInstitution } from './pages/superadmin/CreateInstitution';
 import { useAuthStore } from './store/auth.store';
 
 const queryClient = new QueryClient();
@@ -24,7 +25,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             {user?.role === 'superadmin' ? (
               <Route path="/" element={<SuperAdminLayout />}>
-                <Route index element={<InstitutionList />} />
+                <Route index element={<Navigate to="/institutions" replace />} />
+                <Route path="institutions" element={<InstitutionList />} />
+                <Route path="institutions/create" element={<CreateInstitution />} />
                 <Route path="admins" element={<AdminList />} />
                 <Route path="admins/create" element={<CreateAdmin />} />
               </Route>

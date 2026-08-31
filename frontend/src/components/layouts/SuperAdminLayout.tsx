@@ -14,7 +14,7 @@ export const SuperAdminLayout = () => {
   const profileRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
-    { name: 'Institutes', path: '/', icon: Building2 },
+    { name: 'Institutes', path: '/institutions', icon: Building2 },
     { name: 'Admin', path: '/admins', icon: Users },
   ];
 
@@ -112,7 +112,7 @@ export const SuperAdminLayout = () => {
             
             <ul className="space-y-2 px-3">
               {navItems.map((item) => {
-                const isActive = location.pathname === item.path;
+                const isActive = location.pathname.startsWith(item.path);
                 const Icon = item.icon;
                 return (
                   <li key={item.path} className="relative group">
