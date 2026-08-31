@@ -17,6 +17,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesModule } from './controller/roles/roles.module';
 import { PermissionsModule } from './controller/permissions/permissions.module';
 import { TenantsModule } from './tenants/tenants.module';
+import { TenantAuthModule } from './controller/tenant-auth/tenant-auth.module';
 
 const modules: any = [];
 modules.push(
@@ -40,6 +41,7 @@ modules.push(
   CacheModule,
   InstitutionsModule,
   TenantsModule,
+  TenantAuthModule,
 );
 
 @Module({
@@ -58,7 +60,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('{*path}');
     consumer.apply(TenantMiddleware)
-      .exclude('auth/super-admin', 'user/login')
+      .exclude('auth/super-admin', 'user/login', 'tenant-auth/login')
       .forRoutes('*');
   }
 }

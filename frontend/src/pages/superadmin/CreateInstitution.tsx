@@ -11,6 +11,7 @@ export const CreateInstitution = () => {
     type: 'SCHOOL',
     adminName: '',
     email: '',
+    password: '',
     phone: '',
     address: '',
     plan: 'FREE'
@@ -140,6 +141,19 @@ export const CreateInstitution = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="admin@school.edu"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#059669] focus:bg-white text-gray-800 transition-all font-medium placeholder-gray-400"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Admin Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Set initial password"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#059669] focus:bg-white text-gray-800 transition-all font-medium placeholder-gray-400"
                     required
                   />

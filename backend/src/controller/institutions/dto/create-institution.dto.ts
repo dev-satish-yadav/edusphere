@@ -22,6 +22,10 @@ export class CreateInstitutionDto {
   @IsString()
   phone: string;
 
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
   @IsOptional()
   @IsString()
   address?: string;

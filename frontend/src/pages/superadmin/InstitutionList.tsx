@@ -49,7 +49,7 @@ export const InstitutionList = () => {
     queryKey: ['institutions'],
     queryFn: async () => {
       const response = await api.get('/institutions');
-      return response.data.data;
+      return response.data.data || response.data;
     }
   });
 

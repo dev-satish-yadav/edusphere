@@ -4,11 +4,15 @@ import { Model } from 'mongoose';
 import { Institution, InstitutionDocument } from './entities/institution.entity';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { TenantsService } from '../../tenants/tenants.service';
+import { User, UserSchema } from '../users/entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class InstitutionsService {
   constructor(
     @InjectModel(Institution.name) private institutionModel: Model<InstitutionDocument>,
+    private tenantsService: TenantsService,
   ) {}
 
   async create(createInstitutionDto: CreateInstitutionDto): Promise<Institution> {
@@ -34,7 +38,30 @@ export class InstitutionsService {
       dbName,
     });
 
-    return createdInstitution.save();
+    const savedInstitution = await createdInstitution.save();
+
+    // Provision the first Admin User in the new Tenant Database
+    const tenantUserModel = await this.tenantsService.getTenantModel(
+      dbName,
+      User.name,
+      UserSchema,
+    );
+
+    const hashedPassword = await bcrypt.hash(createInstitutionDto.password, 10);
+
+    const newTenantAdmin = new tenantUserModel({
+      name: createInstitutionDto.adminName,
+      email: createInstitutionDto.email,
+      password: hashedPassword,
+      phone: createInstitutionDto.phone,
+      userType: 'INSTITUTION_ADMIN',
+      tenantId: tenantId,
+      isActive: true,
+    });
+
+    await newTenantAdmin.save();
+
+    return savedInstitution;
   }
 
   async findAll(): Promise<Institution[]> {

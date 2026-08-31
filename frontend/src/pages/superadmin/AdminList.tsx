@@ -7,7 +7,7 @@ export const AdminList = () => {
     queryKey: ['admins'],
     queryFn: async () => {
       const response = await api.get('/admin/list');
-      return response.data.data;
+      return response.data.data || response.data;
     }
   });
 
