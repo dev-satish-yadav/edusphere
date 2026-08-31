@@ -35,4 +35,9 @@ export class CreateAdminDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;
+
+  @ApiProperty({ example: '2000' })
+  @IsString()
+  @IsOptional()
+  secretCode?: string;
 }

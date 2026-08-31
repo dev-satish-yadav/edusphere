@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { api } from '../../services/api';
 
@@ -22,11 +22,11 @@ export const Login = () => {
     setError('');
     
     try {
-      // Mocked endpoint - this would connect to /auth/login
-      const response = await api.post('/auth/login', { email, password });
-      const { user, accessToken } = response.data;
+      // Real backend endpoint for Super Admin
+      const response = await api.post('/admin/login', { email, password });
+      const { user, token } = response.data.data;
       
-      setAuth(user, accessToken);
+      setAuth(user, token);
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to login');
@@ -72,6 +72,16 @@ export const Login = () => {
             Sign In
           </button>
         </form>
+
+        <div className="mt-6 border-t pt-4 text-center">
+          <p className="text-sm text-gray-600 mb-2">System Initialization</p>
+          <Link
+            to="/create-super-admin"
+            className="w-full block bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm transition-colors"
+          >
+            Create Super Admin
+          </Link>
+        </div>
       </div>
     </div>
   );

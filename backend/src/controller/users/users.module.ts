@@ -14,7 +14,7 @@ import { UsersService } from './users.service';
       { name: UserAccessToken.name, schema: UserAccessTokenSchema },
     ]),
   ],
-  exports: [UsersService],
+  exports: [UsersService, UsersDAO],
   providers: [UsersService, UsersDAO, UserAccessTokenDAO],
   controllers: [UsersController],
 })

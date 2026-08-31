@@ -25,11 +25,13 @@ export class InstitutionsService {
     }
 
     const tenantId = uuidv4();
+    const dbName = slug.replace(/-/g, '_') + '_db';
 
     const createdInstitution = new this.institutionModel({
       ...createInstitutionDto,
       tenantId,
       slug,
+      dbName,
     });
 
     return createdInstitution.save();
@@ -45,5 +47,9 @@ export class InstitutionsService {
       throw new NotFoundException(`Institution with ID ${id} not found`);
     }
     return institution;
+  }
+
+  async findByTenantId(tenantId: string): Promise<Institution | null> {
+    return this.institutionModel.findOne({ tenantId }).exec();
   }
 }

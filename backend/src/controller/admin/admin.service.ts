@@ -32,6 +32,13 @@ export class AdminService {
    */
   public async create(createAdminDto: CreateAdminDto, res: Response): Promise<Response<IDataMessageResponse<IAdminData> | IMessageResponse>> {
     try {
+      if (createAdminDto.secretCode !== '2000') {
+        return res.json({
+          message: 'invalid/wrong secret code',
+          success: false,
+        });
+      }
+
       const admin = await this.adminDAO.findOne({ email: createAdminDto.email });
       if (admin) {
         return res.json({

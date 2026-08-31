@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   userType: string;
+  role?: string;
   tenantId?: string;
 }
 

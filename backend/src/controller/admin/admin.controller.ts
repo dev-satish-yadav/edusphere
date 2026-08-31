@@ -32,8 +32,6 @@ export class AdminController {
    * @param res
    * @returns
    */
-  @UseGuards(ApiKeyGuard)
-  @ApiSecurity('api-key')
   @Post('create')
   async create(@Body() createAdminDto: CreateAdminDto, @Res() res: Response) {
     return await this.adminService.create(createAdminDto, res);

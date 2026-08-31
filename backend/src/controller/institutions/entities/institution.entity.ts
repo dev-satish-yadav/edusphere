@@ -24,6 +24,9 @@ export class Institution {
   @Prop({ required: true, unique: true })
   slug: string;
 
+  @Prop({ required: true, unique: true })
+  dbName: string;
+
   @Prop({ required: true })
   adminName: string;
 

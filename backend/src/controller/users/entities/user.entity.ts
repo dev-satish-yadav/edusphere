@@ -18,6 +18,9 @@ export class User {
   @Prop({ type: Number })
   age?: number;
 
+  @Prop({ type: String })
+  phone?: string;
+
   @Prop({ required: false })
   tenantId: string;
 

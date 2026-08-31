@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/guards/jwt-strategy';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { TenantMiddleware } from './common/middlewares/tenant.middleware';
 import { AdminModule } from './controller/admin/admin.module';
 import { ErrorlogModule } from './controller/error-log/error-log.module';
 import { UsersModule } from './controller/users/users.module';
@@ -15,6 +16,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesModule } from './controller/roles/roles.module';
 import { PermissionsModule } from './controller/permissions/permissions.module';
+import { TenantsModule } from './tenants/tenants.module';
 
 const modules: any = [];
 modules.push(
@@ -24,7 +26,7 @@ modules.push(
   }]),
   ConfigModule.forRoot({ isGlobal: true }),
   MongooseModule.forRoot(
-    process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/edusphere',
+    process.env.MONGODB_URI ?? 'mongodb://localhost:27017/edusphere',
   ),
   JwtModule.register({
     global: true,
@@ -37,6 +39,7 @@ modules.push(
   ErrorlogModule,
   CacheModule,
   InstitutionsModule,
+  TenantsModule,
 );
 
 @Module({
@@ -54,5 +57,8 @@ export class AppModule implements NestModule {
   //configure middleware
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('{*path}');
+    consumer.apply(TenantMiddleware)
+      .exclude('auth/super-admin', 'user/login')
+      .forRoutes('*');
   }
 }
