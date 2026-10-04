@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Patch } from '@nestjs/common';
 import { InstitutionsService } from './institutions.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt.guard';
@@ -21,5 +21,10 @@ export class InstitutionsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.institutionsService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateData: any) {
+    return this.institutionsService.update(id, updateData);
   }
 }

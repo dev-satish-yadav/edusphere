@@ -83,7 +83,11 @@ export const InstitutionList = () => {
             const Icon = config.icon;
             
             return (
-              <div key={inst._id} className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col cursor-pointer">
+              <Link 
+                key={inst._id} 
+                to={`/institutions/${inst._id}`}
+                className="bg-white rounded-[16px] shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300 group flex flex-col cursor-pointer"
+              >
                 
                 {/* Image Header */}
                 <div className="h-28 w-full relative overflow-hidden bg-gray-100">
@@ -121,7 +125,7 @@ export const InstitutionList = () => {
                   </div>
                 </div>
 
-              </div>
+              </Link>
             );
           })}
           

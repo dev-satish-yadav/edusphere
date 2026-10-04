@@ -76,6 +76,14 @@ export class InstitutionsService {
     return institution;
   }
 
+  async update(id: string, updateData: any): Promise<Institution> {
+    const updated = await this.institutionModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    if (!updated) {
+      throw new NotFoundException(`Institution with ID ${id} not found`);
+    }
+    return updated;
+  }
+
   async findByTenantId(tenantId: string): Promise<Institution | null> {
     return this.institutionModel.findOne({ tenantId }).exec();
   }

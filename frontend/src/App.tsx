@@ -13,6 +13,7 @@ import { AdminList } from './pages/superadmin/AdminList';
 import { CreateAdmin } from './pages/superadmin/CreateAdmin';
 import { InstitutionList } from './pages/superadmin/InstitutionList';
 import { CreateInstitution } from './pages/superadmin/CreateInstitution';
+import { InstitutionDetail } from './pages/superadmin/InstitutionDetail';
 import { useAuthStore } from './store/auth.store';
 import { getTenantSlug } from './utils/tenant';
 
@@ -58,6 +59,7 @@ function App() {
                     <Route index element={<Navigate to="/institutions" replace />} />
                     <Route path="institutions" element={<InstitutionList />} />
                     <Route path="institutions/create" element={<CreateInstitution />} />
+                    <Route path="institutions/:id" element={<InstitutionDetail />} />
                     <Route path="admins" element={<AdminList />} />
                     <Route path="admins/create" element={<CreateAdmin />} />
                   </Route>
