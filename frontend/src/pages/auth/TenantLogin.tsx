@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { api } from '../../services/api';
 import { getTenantSlug } from '../../utils/tenant';
+// @ts-ignore
+import { Eye, EyeOff } from 'lucide-react';
 
 export const TenantLogin = () => {
   const tenantSlug = getTenantSlug();
@@ -15,10 +17,14 @@ export const TenantLogin = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     setLoading(true);
 
     try {
@@ -28,12 +34,22 @@ export const TenantLogin = () => {
       });
 
       if (response.data.success) {
+        setSuccessMsg('Login successful! Redirecting to dashboard...');
         setAuth(response.data.data.user, response.data.data.token);
-        // We route them to the tenant dashboard on this subdomain
-        navigate(`/dashboard`);
+        
+        // Wait a brief moment so the user sees the success message
+        setTimeout(() => {
+          navigate(`/dashboard`);
+        }, 1000);
+      } else {
+        // If API returns 200 but success: false
+        setError(response.data.message || 'Login failed');
+        setFormData({ email: '', password: '' });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid email or password');
+      // Clear email and password fields on error
+      setFormData({ email: '', password: '' });
     } finally {
       setLoading(false);
     }
@@ -81,6 +97,13 @@ export const TenantLogin = () => {
             </div>
           )}
 
+          {successMsg && (
+            <div className="mb-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-md text-sm font-medium flex items-center gap-2">
+              <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+              {successMsg}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
@@ -96,14 +119,23 @@ export const TenantLogin = () => {
 
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#059669] focus:border-transparent transition-all font-medium placeholder-gray-400 text-gray-900 shadow-sm"
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  className="w-full pl-4 pr-12 py-3.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#059669] focus:border-transparent transition-all font-medium placeholder-gray-400 text-gray-900 shadow-sm"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center h-full"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <button

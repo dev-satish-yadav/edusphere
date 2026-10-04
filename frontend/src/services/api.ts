@@ -28,7 +28,12 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Auto logout if 401 response returned from api
       useAuthStore.getState().logout();
-      window.location.href = '/login';
+      
+      // Do not force reload if we are already trying to log in
+      const isLoginRequest = error.config.url?.includes('/login');
+      if (!isLoginRequest && window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
