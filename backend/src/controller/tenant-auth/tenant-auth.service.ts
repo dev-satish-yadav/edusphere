@@ -15,6 +15,35 @@ export class TenantAuthService {
     private tenantsService: TenantsService,
   ) {}
 
+  async verifyTenant(slug: string) {
+    const institution = await this.institutionModel.findOne({ slug }).exec();
+    
+    if (!institution) {
+      return {
+        success: false,
+        status: 'not_available',
+        message: 'Institution not found',
+      };
+    }
+
+    if (!institution.isActive) {
+      return {
+        success: false,
+        status: 'not_active',
+        message: 'Institution is not active',
+      };
+    }
+
+    return {
+      success: true,
+      status: 'active',
+      data: {
+        name: institution.name,
+        slug: institution.slug,
+      },
+    };
+  }
+
   async login(loginDto: TenantLoginDto) {
     // 1. Find the institution by slug
     const institution = await this.institutionModel.findOne({ slug: loginDto.slug, isActive: true }).exec();

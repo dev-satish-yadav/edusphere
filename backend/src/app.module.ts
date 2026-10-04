@@ -60,7 +60,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('{*path}');
     consumer.apply(TenantMiddleware)
-      .exclude('auth/super-admin', 'user/login', 'tenant-auth/login')
+      .exclude('auth/super-admin', 'user/login', 'tenant-auth/login', 'tenant-auth/verify/(.*)')
       .forRoutes('*');
   }
 }

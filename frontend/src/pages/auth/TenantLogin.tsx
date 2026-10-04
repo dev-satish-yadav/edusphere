@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { api } from '../../services/api';
 import { getTenantSlug } from '../../utils/tenant';
 // @ts-ignore
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Building2, AlertTriangle } from 'lucide-react';
 
 export const TenantLogin = () => {
   const tenantSlug = getTenantSlug();
@@ -18,8 +18,28 @@ export const TenantLogin = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const [successMsg, setSuccessMsg] = useState('');
+
+  const [tenantInfo, setTenantInfo] = useState<{ name: string; status: string } | null>(null);
+  const [verifying, setVerifying] = useState(true);
+
+  useEffect(() => {
+    const verifyTenant = async () => {
+      if (!tenantSlug) return;
+      try {
+        const response = await api.get(`/tenant-auth/verify/${tenantSlug}`);
+        setTenantInfo({
+          name: response.data.data?.name || tenantSlug,
+          status: response.data.status
+        });
+      } catch (err) {
+        setTenantInfo({ name: tenantSlug || '', status: 'not_available' });
+      } finally {
+        setVerifying(false);
+      }
+    };
+    verifyTenant();
+  }, [tenantSlug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +75,49 @@ export const TenantLogin = () => {
     }
   };
 
+  if (verifying) {
+    return (
+      <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="p-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
+          <div className="inline-block w-8 h-8 border-4 border-gray-200 border-t-[#059669] rounded-full animate-spin mb-4"></div>
+          <p className="text-gray-500 font-medium">Verifying institution...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (tenantInfo?.status === 'not_available') {
+    return (
+      <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="p-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100 max-w-md">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Building2 size={32} className="text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Institution Not Found</h2>
+          <p className="text-gray-500 font-medium">
+            The workspace <span className="font-bold text-gray-900">"{tenantSlug}"</span> does not exist. Please check the URL and try again.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (tenantInfo?.status === 'not_active') {
+    return (
+      <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="p-12 text-center bg-white rounded-2xl shadow-sm border border-gray-100 max-w-md">
+          <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <AlertTriangle size={32} className="text-orange-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Account Suspended</h2>
+          <p className="text-gray-500 font-medium">
+            The workspace <span className="font-bold text-gray-900">"{tenantInfo.name}"</span> is currently inactive or suspended. Please contact the administrator.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex font-sans bg-gray-50">
       
@@ -86,7 +149,7 @@ export const TenantLogin = () => {
           <div className="text-center lg:text-left mb-10">
             <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">Sign in</h2>
             <p className="text-gray-500 font-medium">
-              Accessing workspace: <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{tenantSlug}</span>
+              Accessing workspace: <span className="font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{tenantInfo?.name || tenantSlug}</span>
             </p>
           </div>
 
